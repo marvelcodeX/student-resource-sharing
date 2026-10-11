@@ -1,0 +1,19 @@
+# Personal deployment settings (copy frontend/config.example.js to frontend/config.js)
+frontend/config.js
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# Secrets / local files
+.env
+*.pem
+.aws/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

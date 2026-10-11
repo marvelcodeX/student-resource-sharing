@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyShare | Student Resource Sharing</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Icon sprite (Lucide-style line icons, drawn inline so no external files are needed) -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 2l10 5-10 5L2 7z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14l-3-3"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></symbol>
+  </svg>
+
+  <!-- ============================ AUTH VIEW ============================ -->
+  <div id="auth-view" class="auth hidden">
+    <div class="auth-panel">
+      <div class="brand">
+        <svg class="icon icon-lg"><use href="#i-book"/></svg>
+        <span>StudyShare</span>
+      </div>
+      <h1>Share what you know.<br>Find what you need.</h1>
+      <p>A student-run library of notes, slides, question papers and code, hosted on AWS.</p>
+      <ul class="points">
+        <li><svg class="icon"><use href="#i-check"/></svg> Upload and download study material</li>
+        <li><svg class="icon"><use href="#i-check"/></svg> Search and filter by subject</li>
+        <li><svg class="icon"><use href="#i-check"/></svg> Secure sign-in with Amazon Cognito</li>
+      </ul>
+    </div>
+
+    <div class="auth-card">
+      <div id="config-warning" class="notice warn hidden">
+        <svg class="icon"><use href="#i-alert"/></svg>
+        <span>Setup incomplete. Edit <code>config.js</code> and paste your API URL and Cognito App client ID.</span>
+      </div>
+
+      <!-- Sign in -->
+      <form id="signin-form" class="auth-form" autocomplete="on">
+        <h2>Welcome back</h2>
+        <p class="sub">Sign in to your account</p>
+        <label>Username
+          <div class="field"><svg class="icon"><use href="#i-user"/></svg>
+            <input type="text" name="username" required autocomplete="username" placeholder="Your username"></div>
+        </label>
+        <label>Password
+          <div class="field"><svg class="icon"><use href="#i-lock"/></svg>
+            <input type="password" name="password" required autocomplete="current-password" placeholder="Your password"></div>
+        </label>
+        <button type="submit" class="btn primary block">Sign in</button>
+        <p class="msg" data-msg></p>
+        <p class="switch">New here? <a href="#" data-goto="signup">Create an account</a></p>
+      </form>
+
+      <!-- Sign up -->
+      <form id="signup-form" class="auth-form hidden" autocomplete="on">
+        <h2>Create your account</h2>
+        <p class="sub">Pick a username. We email a verification code to confirm your address.</p>
+        <label>Full name
+          <div class="field"><svg class="icon"><use href="#i-user"/></svg>
+            <input type="text" name="name" required maxlength="50" autocomplete="name" placeholder="Your name"></div>
+        </label>
+        <label>Username
+          <div class="field"><svg class="icon"><use href="#i-user"/></svg>
+            <input type="text" name="username" required minlength="3" maxlength="30" pattern="[A-Za-z0-9_.\-]+" autocomplete="username" placeholder="e.g. nivi_21"></div>
+          <small>3-30 characters: letters, numbers, dot, dash or underscore.</small>
+        </label>
+        <label>Email
+          <div class="field"><svg class="icon"><use href="#i-mail"/></svg>
+            <input type="email" name="email" required autocomplete="email" placeholder="you@college.edu"></div>
+          <small>We send the verification code here.</small>
+        </label>
+        <label>Password
+          <div class="field"><svg class="icon"><use href="#i-lock"/></svg>
+            <input type="password" name="password" required minlength="8" autocomplete="new-password" placeholder="Create a password"></div>
+          <small>At least 8 characters with an uppercase letter, a lowercase letter, a number and a symbol.</small>
+        </label>
+        <button type="submit" class="btn primary block">Create account</button>
+        <p class="msg" data-msg></p>
+        <p class="switch">Already registered? <a href="#" data-goto="signin">Sign in</a></p>
+      </form>
+
+      <!-- Verify email -->
+      <form id="confirm-form" class="auth-form hidden">
+        <h2>Verify your email</h2>
+        <p class="sub" id="confirm-sub">Enter the 6-digit code we emailed you.</p>
+        <label>Verification code
+          <div class="field"><svg class="icon"><use href="#i-check"/></svg>
+            <input type="text" name="code" required inputmode="numeric" autocomplete="one-time-code" placeholder="123456"></div>
+        </label>
+        <button type="submit" class="btn primary block">Verify and sign in</button>
+        <p class="msg" data-msg></p>
+        <p class="switch"><a href="#" id="resend-code">Resend code</a> &middot; <a href="#" data-goto="signin">Back to sign in</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================ APP VIEW ============================ -->
+  <div id="app-view" class="hidden">
+    <header class="topbar">
+      <div class="wrap bar">
+        <div class="brand">
+          <svg class="icon icon-lg"><use href="#i-book"/></svg>
+          <span>StudyShare</span>
+        </div>
+        <div class="who">
+          <svg class="icon"><use href="#i-user"/></svg>
+          <span id="user-name"></span>
+          <button id="logout-btn" class="btn ghost small">
+            <svg class="icon"><use href="#i-logout"/></svg> Sign out
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="stats">
+        <div class="stat"><svg class="icon"><use href="#i-file"/></svg><div><strong id="stat-count">0</strong><span>Resources</span></div></div>
+        <div class="stat"><svg class="icon"><use href="#i-layers"/></svg><div><strong id="stat-subjects">0</strong><span>Subjects</span></div></div>
+        <div class="stat"><svg class="icon"><use href="#i-download"/></svg><div><strong id="stat-downloads">0</strong><span>Downloads</span></div></div>
+      </section>
+
+      <div class="layout">
+        <section class="card upload">
+          <h2><svg class="icon"><use href="#i-upload"/></svg> Share a resource</h2>
+          <form id="upload-form">
+            <label>Title
+              <input name="title" maxlength="100" required placeholder="e.g. Unit 3 - Virtualization notes">
+            </label>
+            <label>Subject
+              <input name="subject" maxlength="50" required list="subject-list" placeholder="e.g. Cloud Computing">
+              <datalist id="subject-list"></datalist>
+            </label>
+            <label>Description <small>(optional)</small>
+              <textarea name="description" maxlength="500" rows="3" placeholder="What is inside?"></textarea>
+            </label>
+            <label>File <small>(max 10 MB: pdf, docx, pptx, xlsx, txt, zip, images, code)</small>
+              <input type="file" name="file" required
+                accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.md,.zip,.png,.jpg,.jpeg,.py,.java,.c,.cpp">
+            </label>
+            <progress id="upload-progress" max="100" value="0" class="hidden"></progress>
+            <button type="submit" id="upload-btn" class="btn primary block">Upload</button>
+            <p id="upload-msg" class="msg"></p>
+          </form>
+        </section>
+
+        <section class="browse">
+          <div class="filters">
+            <div class="field grow"><svg class="icon"><use href="#i-search"/></svg>
+              <input id="search" type="search" placeholder="Search title, description or uploader"></div>
+            <select id="subject-filter"><option value="">All subjects</option></select>
+          </div>
+          <p id="list-msg" class="msg"></p>
+          <div id="resource-list" class="grid"></div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="wrap">StudyShare &middot; Cloud Computing mini project &middot; AWS S3, Lambda, DynamoDB, Cognito</footer>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
